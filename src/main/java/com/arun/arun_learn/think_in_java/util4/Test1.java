@@ -3,12 +3,17 @@ package com.arun.arun_learn.think_in_java.util4;
 import org.apache.commons.lang.StringUtils;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 
 /**
  * @program: learn
@@ -225,5 +230,49 @@ class DanForhanEntity {
 
     public void setResult(int result) {
         this.result = result;
+    }
+}
+
+class Solution {
+    public List<Boolean> checkArithmeticSubarrays(int[] nums, int[] l, int[] r) {
+        ArrayList<Boolean> result = new ArrayList<>(l.length);
+        ArrayList<Integer> arrayList;
+        for (int i = 0; i < l.length; i++) {
+            arrayList = new ArrayList<>(r[i]-l[i]+1);
+            for (int j = l[i]; j <= r[i]; j++) {
+                arrayList.add(nums[j]);
+            }
+            Collections.sort(arrayList);
+            HashSet<Integer> iSet = new HashSet<>(arrayList.size());
+            for (int j = 1; j < arrayList.size(); j++) {
+                iSet.add(arrayList.get(j) - arrayList.get(j - 1));
+            }
+            if (iSet.size() == 1) {
+                result.add(true);
+            } else {
+                result.add(false);
+            }
+        }
+        return result;
+    }
+}
+
+class DataTest{
+    public static void main(String[] args) {
+        System.out.println(new DataTest().c1(new int[]{}));
+        System.out.println(new DataTest().c1(new int[]{1}));
+        System.out.println(new DataTest().c1(new int[]{2,3}));
+    }
+
+    private String c1(int[] types){
+        StringBuilder sb = new StringBuilder();
+        for (int type : types) {
+            sb.append(MessageFormat.format(",{0} ", type));
+        }
+        if (sb.length() > 1) {
+            return  sb.toString().substring(1);
+        }else {
+            return sb.toString();
+        }
     }
 }

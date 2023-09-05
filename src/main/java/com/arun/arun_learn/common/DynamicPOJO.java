@@ -151,7 +151,5 @@ public class DynamicPOJO {
         String s = "在不？魔域2礼包领了吗，没领加\\/ ：  \"Jokes1990\"";
         Gson gson = new Gson();
         String replace = "{\"send_time\":1682330537,\"server_id\":1087,\"chat_channel\":\"2\",\"source_id\":286143606286222,\"source_name\":\"多拉哈蔓\",\"source_vip\":0,\"target_id\":0,\"target_name\":\"某某某某\",\"message\":\"在不？魔域2礼包领了吗，没领加\\/ ：  Jokes1990\",\"imei\":\"4e562f8ac848c1461795d0e0afc24b64\",\"plat\":\"android\",\"version\":\"1.0.133.19823\",\"remark\":\"0\",\"checkcode\":\"48b9f0fc83d5b8778ac8880b6dd2a3f1\"}".replace("\\", "\\\\");
-        ClientChatEntity clientChatEntity = gson.fromJson(replace, ClientChatEntity.class);
-        System.out.println(clientChatEntity.getMessage());
     }
 }

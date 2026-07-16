@@ -1,0 +1,70 @@
+name: 📝 Deploy Documentation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '*.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: 📦 Install dependencies
+        run: |
+          npm install -g @mermaid-js/mermaid-cli
+          npm install -g marked-mermaid
+
+      - name: 🏗️ Generate documentation
+        run: |
+          mkdir -p build/docs
+          cp AGENT_README.md build/docs/
+          cp QUICK_START.md build/docs/
+          cp TESTING_GUIDE.md build/docs/
+
+      - name: 📤 Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation
+          path: build/docs/
+
+  deploy-docs:
+    name: Deploy Documentation
+    needs: build-docs
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📤 Upload Pages artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: '.'
+
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

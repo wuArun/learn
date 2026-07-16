@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: agent-application
+  
+  # 如果使用真实的 Spring AI，需要配置 API Key
+  ai:
+    alibaba:
+      api-key: ${DASHSCOPE_API_KEY:your-api-key-here}
+      model: qwen-max
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    root: INFO
+    com.arun.agent: DEBUG
+
+agent:
+  api-key: ${DASHSCOPE_API_KEY:default}

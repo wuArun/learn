@@ -1,0 +1,58 @@
+{
+  "pipeline": "prd-to-commit",
+  "sessionId": "{{SESSION_ID}}",
+  "module": "{{MODULE_NAME}}",
+  "currentStep": 0,
+  "restartPlan": ".sisyphus/plans/prd-to-commit-restart-{{MODULE_NAME}}.md",
+  "steps": [
+    {
+      "step": 0,
+      "name": "流水线状态初始化 (state-init)",
+      "status": "pending_confirmation",
+      "outputFile": null
+    },
+    {
+      "step": 1,
+      "name": "需求分析 (prd-to-wbs)",
+      "status": "blocked",
+      "outputFile": null
+    },
+    {
+      "step": 2,
+      "name": "技术设计 (wbs-to-trd)",
+      "status": "blocked",
+      "outputFile": null
+    },
+    {
+      "step": 3,
+      "name": "测试用例生成 (ui-test)",
+      "status": "blocked",
+      "outputFile": null
+    },
+    {
+      "step": 4,
+      "name": "代码生成与启动 (add-to-future)",
+      "status": "blocked",
+      "outputFile": null
+    },
+    {
+      "step": 5,
+      "name": "自动化测试 (ui-test)",
+      "status": "blocked",
+      "outputFile": null
+    },
+    {
+      "step": 6,
+      "name": "代码评审专家 (code-review-expert)",
+      "status": "blocked",
+      "outputFile": null
+    },
+    {
+      "step": 7,
+      "name": "代码提交 (git commit)",
+      "status": "blocked",
+      "outputFile": null
+    }
+  ],
+  "rule": "初始化时currentStep必须为0，禁止从中间步骤恢复。每步status必须为confirmed才能进入下一步。currentStep只能按0→1→2→...→7顺序递增，禁止跳步。pending_confirmation需等待用户明确确认后改为confirmed。blocked步骤在前面步骤confirmed前不可执行。Step 5测试失败或Step 6评审不通过时循环回到Step 4修正。恢复时读取restartPlan文件进行会话恢复。"
+}

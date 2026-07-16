@@ -1,0 +1,174 @@
+{
+  "version": "1.0.0",
+  "description": "自动化测试公共配置文件 - 所有公共配置和登录信息集中管理",
+  "lastUpdated": "2026-03-22",
+  "author": "Test Team",
+
+  "environments": {
+    "dev": {
+      "baseUrl": "https://apqp-dev.catl.com/",
+      "apiBaseUrl": "http://localhost:8080/api",
+      "timeout": 30000
+    },
+    "test": {
+      "baseUrl": "https://test.example.com",
+      "apiBaseUrl": "https://test.example.com/api",
+      "timeout": 30000
+    },
+    "prod": {
+      "baseUrl": "https://prod.example.com",
+      "apiBaseUrl": "https://prod.example.com/api",
+      "timeout": 30000
+    }
+  },
+
+  "defaultEnvironment": "dev",
+
+  "credentials": {
+    "tenant": {
+      "default": "catl",
+      "test": "test-tenant",
+      "dev": "catl"
+    },
+    "accounts": [
+      {
+        "role": "admin",
+        "username": "60298492",
+        "password": "Iam@2025.",
+        "description": "系统管理员账号 - 拥有所有权限"
+      },
+      {
+        "role": "user",
+        "username": "normal_user",
+        "password": "${USER_PASSWORD}",
+        "description": "普通用户账号 - 受限权限"
+      },
+      {
+        "role": "viewer",
+        "username": "view_only",
+        "password": "${VIEWER_PASSWORD}",
+        "description": "只读用户账号 - 仅查看权限"
+      }
+    ]
+  },
+
+  "selectors": {
+    "common": {
+      "loginForm": {
+        "tenantInput": "#tenantCode",
+        "usernameInput": "#loginName",
+        "passwordInput": "#password",
+        "loginButton": "button[type='submit']",
+        "rememberMe": "#remember",
+        "forgotPassword": ""
+      },
+      "navigation": {
+        "menu": "[data-testid='main-menu']",
+        "userMenu": "[data-testid='user-menu']",
+        "logoutButton": "[data-testid='logout-btn']",
+        "homeLink": "[data-testid='nav-home']",
+        "backButton": "[data-testid='back-btn']"
+      },
+      "commonButtons": {
+        "submit": "button[type='submit']",
+        "cancel": "button:has-text('取消')",
+        "confirm": "button:has-text('确定')",
+        "save": "button:has-text('保存')",
+        "delete": "button:has-text('删除')",
+        "edit": "button:has-text('编辑')",
+        "create": "button:has-text('新建')",
+        "search": "button:has-text('查询')",
+        "reset": "button:has-text('重置')",
+        "export": "button:has-text('导出')",
+        "import": "button:has-text('导入')",
+        "download": "button:has-text('下载')",
+        "upload": "button:has-text('上传')",
+        "close": "button:has-text('关闭')",
+        "refresh": "button:has-text('刷新')"
+      },
+      "formElements": {
+        "input": "input[type='text']",
+        "textarea": "textarea",
+        "select": "select",
+        "checkbox": "input[type='checkbox']",
+        "radio": "input[type='radio']",
+        "datePicker": "[data-testid='date-picker']",
+        "fileInput": "input[type='file']"
+      },
+      "tables": {
+        "table": "table",
+        "tableHeader": "thead tr",
+        "tableRow": "tbody tr",
+        "tableCell": "td",
+        "pagination": "[data-testid='pagination']",
+        "pageSize": "[data-testid='page-size']",
+        "totalCount": "[data-testid='total-count']"
+      },
+      "messages": {
+        "success": ".ant-message-success",
+        "error": ".ant-message-error",
+        "warning": ".ant-message-warning",
+        "info": ".ant-message-info",
+        "confirm": ".ant-modal-confirm",
+        "modal": ".ant-modal"
+      },
+      "loading": {
+        "spinner": ".ant-spin",
+        "mask": ".ant-spin-blur",
+        "skeleton": ".ant-skeleton"
+      }
+    }
+  },
+
+  "timeouts": {
+    "default": 30000,
+    "navigation": 60000,
+    "api": 10000,
+    "fileDownload": 30000,
+    "element": 5000,
+    "animation": 1000
+  },
+
+  "testData": {
+    "defaultTenant": "default",
+    "defaultUser": "admin_user",
+    "screenshotDir": "tests/screenshots",
+    "downloadDir": "tests/downloads",
+    "testDataDir": "tests/data",
+    "reportDir": "tests/report"
+  },
+
+  "retry": {
+    "maxRetries": 3,
+    "retryDelay": 1000,
+    "retryOnFail": true
+  },
+
+  "browser": {
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "headless": true,
+    "slowMo": 0,
+    "devtools": false
+  },
+
+  "api": {
+    "defaultHeaders": {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    "timeout": 10000,
+    "retryCount": 3
+  },
+
+  "report": {
+    "generateHTML": true,
+    "generateMarkdown": true,
+    "generateJSON": true,
+    "includeScreenshots": true,
+    "includeApiLogs": true,
+    "retainHistory": 30
+  }
+}

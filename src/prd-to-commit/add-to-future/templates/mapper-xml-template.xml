@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.catlbattery.infra.mapper.{ResourceName}Mapper">
+
+    <resultMap id="BaseResultMap" type="com.catlbattery.domain.entity.{resourceName}.{ResourceName}Entity">
+        <id     column="{table_prefix}_id"     property="id"              jdbcType="VARCHAR"/>
+        <result column="{table_prefix}_code"   property="{resourcePrefix}Code"   jdbcType="VARCHAR"/>
+        <result column="{table_prefix}_name"   property="{resourcePrefix}Name"   jdbcType="VARCHAR"/>
+        <result column="status"                property="status"          jdbcType="INTEGER"/>
+        <result column="delete_flag"           property="deleteFlag"      jdbcType="TINYINT"/>
+        <result column="creation_date"         property="creationDate"    jdbcType="TIMESTAMP"/>
+        <result column="created_by"            property="createdBy"       jdbcType="VARCHAR"/>
+        <result column="last_updated_by"       property="lastUpdatedBy"   jdbcType="VARCHAR"/>
+        <result column="last_update_date"      property="lastUpdateDate"  jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        {table_prefix}_id,
+        {table_prefix}_code,
+        {table_prefix}_name,
+        status,
+        delete_flag,
+        creation_date,
+        created_by,
+        last_updated_by,
+        last_update_date
+    </sql>
+
+    <!-- 根据条件分页查询 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM {table_name}
+        <where>
+            AND delete_flag = 0
+            <if test="condition.{resourcePrefix}Code != null and condition.{resourcePrefix}Code != ''">
+                AND {table_prefix}_code = #{condition.{resourcePrefix}Code}
+            </if>
+            <if test="condition.{resourcePrefix}Name != null and condition.{resourcePrefix}Name != ''">
+                AND {table_prefix}_name LIKE CONCAT('%', #{condition.{resourcePrefix}Name}, '%')
+            </if>
+            <if test="condition.status != null">
+                AND status = #{condition.status}
+            </if>
+        </where>
+        ORDER BY creation_date DESC
+    </select>
+
+    <!-- 根据ID列表批量查询 -->
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM {table_name}
+        WHERE delete_flag = 0
+        AND {table_prefix}_id IN
+        <foreach collection="ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 逻辑删除 -->
+    <update id="logicalDeleteById">
+        UPDATE {table_name}
+        SET delete_flag = 1,
+            last_updated_by = #{operator},
+            last_update_date = NOW()
+        WHERE {table_prefix}_id = #{id}
+          AND delete_flag = 0
+    </update>
+
+</mapper>
